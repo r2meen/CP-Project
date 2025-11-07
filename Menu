@@ -102,7 +102,7 @@ void displayMenu() {
 
 
 
-//THI PORTION IS UNDER CONSTRUCTION (this is not complete ignore)
+//THIS PORTION IS UNDER CONSTRUCTION (this is not complete ignore)
 
 // main menu execute kre ga
 void addPatient()        { printf("\n[Add Patient Module]\n"); }
