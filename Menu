@@ -1,0 +1,116 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void addPatient();          // Adds new patient record to file
+void searchPatient();       // Searches patient details
+void updatePatient();       // Updates existing record
+void deletePatient();       // Deletes a record by ID
+void addDoctor();           // Adds new doctor record
+void searchDoctor();        // Finds doctor details
+void createAppointment();   // Creates new appointments for patients
+void generateBill();        // Generates bill for the patients
+void displayReports();      // Displays various reports
+void displayMenu();         // Displays the menu options
+
+int main() {
+    int choice;
+
+    do {
+        displayMenu(); 
+
+        printf("Enter your choice (1-10): ");
+
+        if (scanf("%d", &choice) != 1) {   
+            printf("Invalid input! Please enter a number.\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        switch (choice) {
+            case 1:
+              addPatient(); 
+            break;
+
+            case 2: 
+              searchPatient(); 
+            break;
+
+            case 3:
+              updatePatient(); 
+            break;
+
+            case 4: 
+              deletePatient();
+            break;
+
+            case 5: 
+              addDoctor();
+            break;
+
+            case 6:
+              searchDoctor();
+            break;
+
+            case 7: 
+              createAppointment(); 
+            break;
+
+            case 8:
+              generateBill(); 
+            break;
+
+            case 9: 
+              displayReports();
+            break;
+
+            case 10:
+                printf("\nExiting program... Thank you!\n");
+                break;
+
+            default:
+                printf("\nInvalid choice! Please select from 1–10.\n");
+        }
+
+        printf("\nPress Enter to continue...");
+        while (getchar() != '\n'); 
+        getchar();                
+        clearScreen();            
+
+    } while (choice != 10);
+
+    return 0;
+}
+
+void displayMenu() {
+    printf("\n===========================================\n");
+    printf("         HOSPITAL MANAGEMENT SYSTEM! \n");
+    printf("===========================================\n");
+    printf("1  - Add Patient\n");
+    printf("2  - Search Patient\n");
+    printf("3  - Update Patient\n");
+    printf("4  - Delete Patient\n");
+    printf("5  - Add Doctor\n");
+    printf("6  - Search Doctor\n");
+    printf("7  - Create Appointment\n");
+    printf("8  - Generate Bill\n");
+    printf("9  - Display Reports\n");
+    printf("10 - Exit\n");
+    printf("===========================================\n");
+}
+
+
+
+
+//THI PORTION IS UNDER CONSTRUCTION (this is not complete ignore)
+
+// main menu execute kre ga
+void addPatient()        { printf("\n[Add Patient Module]\n"); }
+void searchPatient()     { printf("\n[Search Patient Module]\n"); }
+void updatePatient()     { printf("\n[Update Patient Module]\n"); }
+void deletePatient()     { printf("\n[Delete Patient Module]\n"); }
+void addDoctor()         { printf("\n[Add Doctor Module]\n"); }
+void searchDoctor()      { printf("\n[Search Doctor Module]\n"); }
+void createAppointment() { printf("\n[Create Appointment Module]\n"); }
+void generateBill()      { printf("\n[Generate Bill Module]\n"); }
+void displayReports()    { printf("\n[Display Reports Module]\n"); }
