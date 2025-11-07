@@ -32,3 +32,12 @@ generateBill()	          //Calculates cost and saves billing info	            - 
 
 View Reports:
 displayReports()         	//Shows patient/doctor/appointment lists	            - rameen
+
+File Handling Helpers:
+saveToFile(), readFromFile()	//Handles all file I/O	                          - eifa
+
+Testing Utility:
+runTestCases()	          //Runs and logs test cases                            -	yusra
+
+Exit System:
+exitProgram()            //Safely terminates the program	                      - rameen
