@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include<ctype.h>
+#include<string.h>
+
 struct Patient
 {
     int id;
@@ -27,6 +29,44 @@ struct Appointment
     char date[15];
     char time[10];
 };
+
+void displayPatientByID(int id)
+{
+    struct Patient p;
+    FILE *fp = fopen("patients.txt", "r");
+    int found = 0;
+
+    if (!fp)
+    {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    while (fscanf(fp, "%d,%[^,],%[^,],%[^,],%d,%[^,],%[^,],%[^\n]\n",
+                  &p.id, p.firstName, p.lastName, p.fullName,
+                  &p.age, p.gender, p.disease, p.doctorAssigned) != EOF)
+    {
+        if (p.id == id)
+        {
+            printf("\nPatient Found!\n");
+            printf("-----------------------------\n");
+            printf("ID              : %d\n", p.id);
+            printf("Full Name       : %s\n", p.fullName);
+            printf("Age             : %d\n", p.age);
+            printf("Gender          : %s\n", p.gender);
+            printf("Disease         : %s\n", p.disease);
+            printf("Doctor Assigned : %s\n", p.doctorAssigned);
+            printf("-----------------------------\n");
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        printf("No patient found with ID %d\n", id);
+
+    fclose(fp);
+} 
 
 
 void searchPatient()

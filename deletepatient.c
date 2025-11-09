@@ -66,55 +66,78 @@ void displayPatientByID(int id)
 
 void deletePatient()
 {
-    int id, found = 0;
-    struct Patient p;
-    FILE *fp, *temp;
+    int deleteID, found = 0;
+    struct Patient p, toDelete;
+
+    FILE *fp = fopen("patients.txt", "r");
+    FILE *temp = fopen("temp.txt", "w");
+
+    if (!fp || !temp) {
+        printf("Error opening file!\n");
+        return;
+    }
+
     printf("\n====== DELETE PATIENT ======\n");
-    printf("Enter the patient ID to delete: ");
-    scanf("%d", &id);
+    printf("Enter Patient ID to delete: ");
+    scanf("%d", &deleteID);
 
-    printf("\nDetails of the patient you want to delete:\n");
-    displayPatientByID(id);
-
-    char confirm;
-    printf("\nAre you sure you want to delete this patient? (y/n): ");
-    scanf(" %c", &confirm);
-
-    if (confirm == 'y' && confirm == 'Y')
-    {
-        printf("Patient record successfully deleted!.\n");
-        return;
-    }
-    else
-        printf("Deletion Cancelled!\n");
-
-    fp = fopen("patients.txt", "r");
-    if (!fp)
-    {
-        printf("Error opening file.\n");
-        return;
-    }
-    temp = fopen("temp.txt", "w");
-    if (!temp)
-    {
-        printf("Error creating temporary file!\n");
-        fclose(fp);
-        return;
-    }
+    // First pass: SEARCH + DISPLAY
     while (fscanf(fp, "%d,%[^,],%[^,],%[^,],%d,%[^,],%[^,],%[^\n]\n",
                   &p.id, p.firstName, p.lastName, p.fullName,
                   &p.age, p.gender, p.disease, p.doctorAssigned) != EOF)
     {
-        if (p.id == id)
+        if (p.id == deleteID)
         {
             found = 1;
+            toDelete = p;
+
+            printf("\nPatient Found!\n");
+            printf("-----------------------------\n");
+            printf("ID              : %d\n", toDelete.id);
+            printf("Full Name       : %s\n", toDelete.fullName);
+            printf("Age             : %d\n", toDelete.age);
+            printf("Gender          : %s\n", toDelete.gender);
+            printf("Disease         : %s\n", toDelete.disease);
+            printf("Doctor Assigned : %s\n", toDelete.doctorAssigned);
+            printf("-----------------------------\n");
+            break;
         }
-        else
-        {
-            fprintf(temp, "%d,%s,%s,%s,%d,%s,%s,%s\n",
-                    p.id, p.firstName, p.lastName, p.fullName,
-                    p.age, p.gender, p.disease, p.doctorAssigned);
-        }
+    }
+
+    if (!found) {
+        printf("\nNo patient found with ID %d\n", deleteID);
+        fclose(fp);
+        fclose(temp);
+        remove("temp.txt");
+        return;
+    }
+
+    // Ask for confirmation
+    char confirm;
+    printf("\nAre you sure you want to DELETE this patient? (Y/N): ");
+    scanf(" %c", &confirm);
+
+    if (!(confirm == 'Y' || confirm == 'y')) {
+        printf("\nDeletion Cancelled.\n");
+        fclose(fp);
+        fclose(temp);
+        remove("temp.txt");
+        return;
+    }
+
+    // SECOND PASS: copy all except deleted one
+    rewind(fp);  // go back to start of file
+
+    while (fscanf(fp, "%d,%[^,],%[^,],%[^,],%d,%[^,],%[^,],%[^\n]\n",
+        &p.id, p.firstName, p.lastName, p.fullName,
+        &p.age, p.gender, p.disease, p.doctorAssigned) != EOF)
+    {
+        if (p.id == deleteID)
+            continue;  // skip the one being deleted
+
+        fprintf(temp, "%d,%s,%s,%s,%d,%s,%s,%s\n",
+                p.id, p.firstName, p.lastName, p.fullName,
+                p.age, p.gender, p.disease, p.doctorAssigned);
     }
 
     fclose(fp);
@@ -123,9 +146,9 @@ void deletePatient()
     remove("patients.txt");
     rename("temp.txt", "patients.txt");
 
-    if (!found)
-        printf("No patient found with ID %d.\n", id);
+    printf("\nRecord Deleted Successfully!\n");
 }
+
 int main(){
     deletePatient();
     return 0;
